@@ -28,6 +28,7 @@ public class MainActivity extends Activity implements OnClickListener{
 	private DataSingleton dataS;
 	private ListView listView1;
 	private SimpleAdapter adapter;
+	private HashMap<String,String> btn_option_data;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +68,17 @@ public class MainActivity extends Activity implements OnClickListener{
         	 public void onItemClick(AdapterView<?> parent,View view,int pos,long id){
         		 ListView listView = (ListView) parent;
         		 Map<?, ?> item = (Map<?, ?>) listView.getItemAtPosition(pos);
-        		 Toast.makeText(getApplicationContext(), item.get("title").toString()+pos, Toast.LENGTH_LONG).show();
+        		 Toast.makeText(getApplicationContext(), item.get("title").toString()+pos, Toast.LENGTH_SHORT).show();
+        		 
+        		 btn_option_data = new HashMap<String,String>();
+        			btn_option_data.put("doType", "edit");
+        			btn_option_data.put("title_str", item.get("title").toString());
+        			btn_option_data.put("main_str", item.get("main").toString());
+        			btn_option_data.put("position", String.valueOf(pos));
+        			
+        			Intent intent = new Intent(MainActivity.this,InputActivity.class);
+        			intent.putExtra("AddType", btn_option_data);
+        			startActivity(intent);
         	 }
 		});  
     }
@@ -102,8 +113,13 @@ public class MainActivity extends Activity implements OnClickListener{
 		// TODO Auto-generated method stub
 		Toast.makeText(getApplicationContext(), "＋押されました", Toast.LENGTH_LONG).show();
 		
+		btn_option_data = new HashMap<String,String>();
+		btn_option_data.put("doType", "new");
+		btn_option_data.put("title_str", "");
+		btn_option_data.put("main_str", "");
+		
 		Intent intent = new Intent(MainActivity.this,InputActivity.class);
-		intent.putExtra("AddType", "new");
+		intent.putExtra("AddType", btn_option_data);
 		startActivity(intent);
 	}
 }

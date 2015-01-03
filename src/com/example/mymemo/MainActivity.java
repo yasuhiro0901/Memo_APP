@@ -6,9 +6,14 @@ import java.util.List;
 import java.util.Map;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.AdapterView;
+import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.ImageButton;
 //import android.view.Menu;
 //import android.view.MenuItem;
 //import android.widget.ArrayAdapter;
@@ -16,16 +21,21 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements OnClickListener{
 	private String[] titleText;
 	private String[] mainText;
 	private DataSingleton dataS;
+	private ListView listView1;
+	private SimpleAdapter adapter;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
+        ImageButton add_button = (ImageButton)findViewById(R.id.imageButton1);
+        add_button.setOnClickListener(this); 
+       
         dataS = DataSingleton.getInstance();
         titleText = dataS.getData(DataSingleton.DATATYPE_TITLE);
         mainText = dataS.getData(DataSingleton.DATATYPE_MAIN);
@@ -60,4 +70,13 @@ public class MainActivity extends Activity {
         	 }
 		});
     }
+	@Override
+	public void onClick(View arg0) {
+		// TODO Auto-generated method stub
+		Toast.makeText(getApplicationContext(), "＋押されました", Toast.LENGTH_LONG).show();
+		
+		Intent intent = new Intent(MainActivity.this,InputActivity.class);
+		intent.putExtra("AddType", "new");
+		startActivity(intent);
+	}
 }

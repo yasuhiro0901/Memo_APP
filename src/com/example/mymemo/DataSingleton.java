@@ -6,6 +6,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
@@ -26,7 +27,8 @@ public class DataSingleton {
 	
 	private Context main_c;
 	
-	public static DataSingleton getInstance(){
+	private int data_size;
+	
 	public static DataSingleton getInstance(Context c){
 		if(instance == null){
 			instance = new DataSingleton(c);
@@ -34,12 +36,42 @@ public class DataSingleton {
 		return instance;
 	}
 	public void Init(){
-		//初期のみ
-		title_list=new ArrayList<String>(Arrays.asList("太陽","月","星","節制"));
-		main_list=new ArrayList<String>(Arrays.asList("それはまぶしすぎる","疑心","たったひとつの真実を求めて","金"));
+		SharedPreferences save_pre = PreferenceManager.getDefaultSharedPreferences(main_c);
 		
-		//SharedPreferences save_pre = PreferenceManager.getDefaultSharedPreferences(main_c);
-		//save_pre.edit().putStringSet("title",title_list);
+		if(!save_pre.getString("isfirst", "").equals("not")){
+			Log.i("abc","初回起動");
+			Log.i("abc","isfirst"+save_pre.getString("isfirst", ""));
+			//初期のみ
+			title_list=new ArrayList<String>(Arrays.asList("太陽","月","星","節制"));
+			main_list=new ArrayList<String>(Arrays.asList("それはまぶしすぎる","疑心","たったひとつの真実を求めて","金"));
+			
+			SaveData();
+			SetDataSize();
+			
+			Editor editor = save_pre.edit();
+			editor.putString("isfirst","not");
+			editor.apply();
+		}
+		else{
+			Log.i("abc","すでに起動してますね");
+			//data_size = 4;
+			if(GetDataSize() != -1){
+				title_list = new ArrayList<String>();
+				main_list = new ArrayList<String>();
+				for(int i = 0;i<GetDataSize();i++){
+					title_list.add(save_pre.getString("title"+i, ""));
+					main_list.add(save_pre.getString("main"+i, ""));
+				}
+			}
+			else {
+				Log.i("abc","取得できなかったので初回起動を行います");
+				Editor editor = save_pre.edit();
+				editor.putString("isfirst","first");
+				editor.apply();
+				Init();
+			}
+		}
+		
 	}
 	public void SetContext(Context c){
 		main_c = c;
@@ -80,8 +112,46 @@ public class DataSingleton {
 		//Log.i(title_str,main_str);
 		//Log.i(title_str,title_list.get(4));
 	}
+	public boolean EditData(String title_str,String main_str,int pos){
+		if(title_str.equals("")){
+			return false;
+		}
+		else{
+			title_list.set(pos,title_str);
+			main_list.set(pos, main_str);
+			return true;
+		}
+	}
 	public void DeleteData(int position){
 		title_list.remove(position);
 		main_list.remove(position);
+	}
+	
+	public void SetDataSize(){
+		data_size = title_list.size();
+		SharedPreferences save_pre = PreferenceManager.getDefaultSharedPreferences(main_c);
+		Editor editor = save_pre.edit();
+		editor.putInt("dataSize",data_size);
+		editor.apply();
+	}
+	public int GetDataSize(){
+		SharedPreferences save_pre = PreferenceManager.getDefaultSharedPreferences(main_c);
+		data_size = save_pre.getInt("dataSize", -1);
+		return data_size;
+	}
+	
+	public void SaveData(){
+		SharedPreferences save_pre = PreferenceManager.getDefaultSharedPreferences(main_c);
+		Editor editor = save_pre.edit();
+		for(int i = 0;i<title_list.size();i++){
+			editor.putString("title"+i, title_list.get(i));
+			Log.i("abc",title_list.get(i)+"を保存しました。title");
+		}
+		for(int i = 0;i<main_list.size();i++){
+			editor.putString("main"+i, main_list.get(i));
+			Log.i("abc",main_list.get(i)+"を保存しました。main");
+		}
+		SetDataSize();
+		editor.apply();
 	}
 }

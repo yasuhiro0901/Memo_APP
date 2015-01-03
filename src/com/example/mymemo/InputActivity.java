@@ -79,8 +79,14 @@ public class InputActivity extends Activity implements OnClickListener{
 				Toast.makeText(getApplicationContext(), "タイトルを入力してください", Toast.LENGTH_LONG).show();
 			}
 			else{
+				dataS.SaveData();
 				finish();
 			}
+			break;
+		case R.id.button2:
+			dataS.DeleteData( Integer.valueOf(btn_option_data.get("position")));
+			dataS.SaveData();
+			finish();
 			break;
 		}
 	}

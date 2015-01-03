@@ -38,7 +38,9 @@ public class MainActivity extends Activity implements OnClickListener{
         ImageButton add_button = (ImageButton)findViewById(R.id.imageButton1);
         add_button.setOnClickListener(this); 
        
-        dataS = DataSingleton.getInstance();
+        dataS = DataSingleton.getInstance(this);
+        
+        
 //        titleText = dataS.getData(DataSingleton.DATATYPE_TITLE);
 //        mainText = dataS.getData(DataSingleton.DATATYPE_MAIN);
 //        

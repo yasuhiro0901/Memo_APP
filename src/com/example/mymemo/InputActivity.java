@@ -24,7 +24,7 @@ public class InputActivity extends Activity implements OnClickListener{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_input_new);
-		 dataS = DataSingleton.getInstance();
+		 dataS = DataSingleton.getInstance(this);
 		
 		 ImageButton return_button = (ImageButton)findViewById(R.id.imageButton1);
 		 return_button.setOnClickListener(this);

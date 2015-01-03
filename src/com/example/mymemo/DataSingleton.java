@@ -12,9 +12,10 @@ import android.widget.Toast;
 
 public class DataSingleton {
 	private static DataSingleton instance = null;
-	private DataSingleton(){
+	private DataSingleton(Context ct){
+		SetContext(ct);
 		Init();
-		Log.i("abc","init");
+//		Log.i("abc","init");
 	}
 	//定数
 	public static final int DATATYPE_TITLE = 0;
@@ -26,8 +27,9 @@ public class DataSingleton {
 	private Context main_c;
 	
 	public static DataSingleton getInstance(){
+	public static DataSingleton getInstance(Context c){
 		if(instance == null){
-			instance = new DataSingleton();
+			instance = new DataSingleton(c);
 		}
 		return instance;
 	}

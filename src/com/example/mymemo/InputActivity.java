@@ -38,23 +38,23 @@ public class InputActivity extends Activity implements OnClickListener{
 		 //edit_title.setBackgroundColor(Color.WHITE);
 		 //edit_main.setBackgroundColor(Color.WHITE);
 		 
+		//値の受け取り
+	    Intent intent = getIntent();
+	    btn_option_data = (HashMap<String, String>) intent.getSerializableExtra("AddType");
+	    	
+	    if(btn_option_data.get("doType").equals("new")){
+	    	delete_btn.setVisibility(View.INVISIBLE);
+	    }
+	    else if(btn_option_data.get("doType").equals("edit")){
+	    	edit_title.setText(btn_option_data.get("title_str"));
+	    	edit_main.setText(btn_option_data.get("main_str"));
+	    }
 	}
 	
 	@Override
     protected void onStart() {
     	super.onStart();
     	
-    	//値の受け取り
-    	Intent intent = getIntent();
-    	btn_option_data = (HashMap<String, String>) intent.getSerializableExtra("AddType");
-    	
-    	if(btn_option_data.get("doType").equals("new")){
-    		delete_btn.setVisibility(View.INVISIBLE);
-    	}
-    	else if(btn_option_data.get("doType").equals("edit")){
-    		edit_title.setText(btn_option_data.get("title_str"));
-    		edit_main.setText(btn_option_data.get("main_str"));
-    	}
 	}
 	
 

@@ -25,6 +25,7 @@ import android.widget.Toast;
 public class MainActivity extends Activity implements OnClickListener{
 	private String[] titleText;
 	private String[] mainText;
+    private String[] dateText;
 	private DataSingleton dataS;
 	private ListView listView1;
 	private SimpleAdapter adapter;
@@ -76,6 +77,7 @@ public class MainActivity extends Activity implements OnClickListener{
         			btn_option_data.put("doType", "edit");
         			btn_option_data.put("title_str", item.get("title").toString());
         			btn_option_data.put("main_str", item.get("main").toString());
+                    btn_option_data.put("date_str",item.get("date").toString());
         			btn_option_data.put("position", String.valueOf(pos));
         			
         			Intent intent = new Intent(MainActivity.this,InputActivity.class);
@@ -89,12 +91,14 @@ public class MainActivity extends Activity implements OnClickListener{
     	super.onStart();
     	 titleText = dataS.getData(DataSingleton.DATATYPE_TITLE);
          mainText = dataS.getData(DataSingleton.DATATYPE_MAIN);
+         dateText = dataS.getData(DataSingleton.DATATYPE_DATE);
          
    	  List<Map<String,String>> list = new ArrayList<Map<String,String>>();
        for(int i=0; i<titleText.length;i++){
        	Map<String,String> map = new HashMap<String, String>();
        	map.put("title", titleText[i]);
        	map.put("main", mainText[i]);
+        map.put("date", dateText[i]);
        	list.add(map);
        }
          
@@ -105,9 +109,9 @@ public class MainActivity extends Activity implements OnClickListener{
           SimpleAdapter adapter = new SimpleAdapter(
                   this,
                   list,
-                  android.R.layout.simple_list_item_2,
-                  new String[]{"title","main"},
-                  new int[] {android.R.id.text1,android.R.id.text2});
+                  R.layout.three_list_item,
+                  new String[]{"title","main","date"},
+                  new int[] {R.id.listItemView1,R.id.listItemView2,R.id.listItemView3});
           listView1.setAdapter(adapter);
     }
 	@Override
@@ -119,6 +123,7 @@ public class MainActivity extends Activity implements OnClickListener{
 		btn_option_data.put("doType", "new");
 		btn_option_data.put("title_str", "");
 		btn_option_data.put("main_str", "");
+        btn_option_data.put("date_str", "");
 		
 		Intent intent = new Intent(MainActivity.this,InputActivity.class);
 		intent.putExtra("AddType", btn_option_data);

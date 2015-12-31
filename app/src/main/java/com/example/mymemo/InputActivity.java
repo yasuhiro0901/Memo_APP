@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+
 public class InputActivity extends Activity implements OnClickListener{
 	private EditText edit_title,edit_main;
 	private Button delete_btn;
@@ -65,7 +66,7 @@ public class InputActivity extends Activity implements OnClickListener{
 		case R.id.imageButton1://戻るボタン
 			finish();
 			break;
-		case R.id.button1:
+		case R.id.button1: //決定ボタン
 			boolean isAdd = false;
 			if(btn_option_data.get("doType").equals("new")){
 				isAdd = dataS.AddData(edit_title.getText().toString(), edit_main.getText().toString());
@@ -73,7 +74,8 @@ public class InputActivity extends Activity implements OnClickListener{
 			else if(btn_option_data.get("doType").equals("edit")){
 				isAdd = dataS.EditData(edit_title.getText().toString(), edit_main.getText().toString(), Integer.valueOf(btn_option_data.get("position")));
 			}
-			
+
+
 			//エラー
 			if(!isAdd){
 				Toast.makeText(getApplicationContext(), "タイトルを入力してください", Toast.LENGTH_LONG).show();
@@ -83,11 +85,12 @@ public class InputActivity extends Activity implements OnClickListener{
 				finish();
 			}
 			break;
-		case R.id.button2:
+		case R.id.button2: //削除ボタン
 			dataS.DeleteData( Integer.valueOf(btn_option_data.get("position")));
 			dataS.SaveData();
 			finish();
 			break;
 		}
 	}
+
 }
